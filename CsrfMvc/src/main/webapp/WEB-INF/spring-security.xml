@@ -7,21 +7,41 @@
                 http://www.springframework.org/schema/security/spring-security.xsd
                 http://www.springframework.org/schema/beans
                 http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- HTTP security configuration -->
     <http auto-config="true" use-expressions="true">
-        <intercept-url pattern="/**" access="isAuthenticated()" />
-       
-         <csrf token-repository-ref="csrfTokenRepository"/>
+        <!-- Define URLs and access rules -->
+        <intercept-url pattern="/CsrfMvc/**" access="isAuthenticated()" />
+        <intercept-url pattern="/CsrfMvc/login" access="permitAll()" />
+        
+        <!-- CSRF configuration -->
+        <csrf token-repository-ref="csrfTokenRepository" />
+
+        <!-- Custom filter after CSRF -->
         <custom-filter after="CSRF_FILTER" ref="customFilter" />
-         <form-login default-target-url="/" />
+
+        <!-- Configure form login with custom login page -->
+        <form-login
+            login-page="/CsrfMvc/login"
+            default-target-url="/CsrfMvc/Home"
+            authentication-failure-url="/CsrfMvc/login?error=true"
+            username-parameter="username"
+            password-parameter="password" />
     </http>
 
+    <!-- Authentication manager configuration -->
     <authentication-manager>
         <authentication-provider>
+            <!-- Define users with roles -->
             <user-service>
                 <user name="satya" password="{noop}satya" authorities="ROLE_USER" />
             </user-service>
         </authentication-provider>
     </authentication-manager>
- <beans:bean id="csrfTokenRepository" class="com.csrf1.tokenrepo.CustomCsrfTokenRepository"/>
+
+    <!-- Custom CSRF token repository -->
+    <beans:bean id="csrfTokenRepository" class="com.csrf1.tokenrepo.CustomCsrfTokenRepository" />
+
+    <!-- Custom filter definition -->
     <beans:bean id="customFilter" class="com.csrf1.service.CustomFilter" />
 </beans:beans>

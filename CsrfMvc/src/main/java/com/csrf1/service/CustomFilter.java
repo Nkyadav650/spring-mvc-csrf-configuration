@@ -16,11 +16,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomFilter implements Filter {
     Logger logger = Logger.getLogger(CustomFilter.class.getName());
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+    	Filter.super.init(filterConfig);
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
+        System.out.println("request : "+request.isSecure());
 
         if (token != null) {
             logger.info("CSRF Token: " + token.getToken());
@@ -29,11 +34,9 @@ public class CustomFilter implements Filter {
         chain.doFilter(request, response);
     }
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-    }
-
+  
     @Override
     public void destroy() {
+    	Filter.super.destroy();
     }
 }

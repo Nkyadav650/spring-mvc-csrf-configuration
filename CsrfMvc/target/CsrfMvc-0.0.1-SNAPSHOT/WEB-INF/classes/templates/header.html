@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CSRF Form Example</title>
+</head>
+<body>
+   <h1>hello ths is header page</h1>
+   <form action="/CsrfMvc/" method="post">
+        <label for="data">Data:</label>
+        <input type="text" id="hello" name="hello">
+        <!-- Include CSRF token -->
+        <input type="text" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

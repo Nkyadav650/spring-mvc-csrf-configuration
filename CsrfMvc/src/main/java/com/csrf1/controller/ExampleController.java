@@ -2,8 +2,11 @@ package com.csrf1.controller;
 
 import java.util.logging.Logger;
 
+import javax.swing.text.html.FormSubmitEvent.MethodType;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -12,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ExampleController {
     Logger logger = Logger.getLogger(ExampleController.class.getName());
 
-    @RequestMapping("/")
+    @RequestMapping(value = "/home")
     public String home() {
         return "Home";
     }
@@ -34,5 +37,9 @@ public class ExampleController {
     @RequestMapping("/header")
     public String header() {
         return "header";
+    }
+    @RequestMapping(value = "/login" )
+    public String login() {
+        return "login";
     }
 }
